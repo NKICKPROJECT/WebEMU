@@ -12,8 +12,6 @@
             --neon-blue: #00f3ff;
             --neon-purple: #bc13fe;
             --bg-dark: #0a0a0f;
-            --ctrl-opacity: 0.6;
-            --ctrl-scale: 1;
         }
 
         body {
@@ -22,9 +20,8 @@
             background-color: var(--bg-dark);
             color: white;
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevent scrolling */
-            touch-action: none; /* Prevent pull-to-refresh on mobile */
-            -webkit-user-select: none;
+            overflow: hidden;
+            touch-action: none;
             user-select: none;
         }
 
@@ -64,130 +61,15 @@
         }
         .neon-btn:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px rgba(0, 243, 255, 0.6); }
 
-        .neon-btn-purple {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 10px rgba(188, 19, 254, 0.2), inset 0 0 10px rgba(188, 19, 254, 0.1);
-        }
-        .neon-btn-purple:hover { background: var(--neon-purple); color: white; box-shadow: 0 0 20px rgba(188, 19, 254, 0.6); }
-
-        /* --- Virtual Controller Overlay --- */
-        #game-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 20; pointer-events: none; 
-        }
-
-        .v-ctrl {
-            position: absolute; pointer-events: auto;
-            opacity: var(--ctrl-opacity);
-            transform: scale(var(--ctrl-scale));
-            transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-        }
-        .v-ctrl.hidden-ctrl { display: none !important; } /* For hiding D-pad/Analog */
-
-        /* Edit Mode Styles (Drag & Drop) */
-        .editing-mode #game-overlay { background: rgba(0, 10, 30, 0.6); pointer-events: auto; }
-        .editing-mode .v-ctrl {
-            border: 2px dashed var(--neon-blue);
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-            border-radius: 10px;
-            cursor: move;
-            opacity: 1 !important;
-            transform: scale(1) !important; /* Reset scale for easy dragging */
-        }
-        .editing-mode .v-ctrl * { pointer-events: none; } /* Disable button clicks while dragging */
-
-        #edit-bar { display: none; }
-        .editing-mode #edit-bar { display: flex; }
-
-        /* Buttons Styling */
-        .ctrl-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: rgba(255,255,255,0.7);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-        .ctrl-btn:active, .ctrl-btn.active {
-            background: rgba(255, 255, 255, 0.4);
-            border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); transform: scale(0.95);
-        }
-
-        /* D-Pad */
-        .dpad-container { width: 150px; height: 150px; bottom: 180px; left: 40px; transform-origin: bottom left; }
-        .dpad-btn {
-            position: absolute; width: 45px; height: 45px;
-            background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.3);
-            display: flex; align-items: center; justify-content: center; border-radius: 8px;
-        }
-        .dpad-btn:active, .dpad-btn.active { background: rgba(255, 255, 255, 0.5); border-color: var(--neon-blue); }
-        .dpad-up { top: 0; left: 52.5px; border-radius: 8px 8px 0 0; }
-        .dpad-down { bottom: 0; left: 52.5px; border-radius: 0 0 8px 8px; }
-        .dpad-left { left: 0; top: 52.5px; border-radius: 8px 0 0 8px; }
-        .dpad-right { right: 0; top: 52.5px; border-radius: 0 8px 8px 0; }
-        .dpad-center { position: absolute; top: 45px; left: 45px; width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; }
-
-        /* Analog Stick */
-        .analog-container {
-            width: 120px; height: 120px; bottom: 40px; left: 55px; transform-origin: bottom left;
-            border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.15);
-            display: flex; align-items: center; justify-content: center; touch-action: none;
-        }
-        .analog-stick {
-            width: 55px; height: 55px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(150,150,150,0.4) 100%);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.4);
-            pointer-events: none; transition: transform 0.1s ease-out;
-        }
-
-        /* Action Buttons */
-        .action-container { width: 160px; height: 160px; bottom: 80px; right: 40px; transform-origin: bottom right; }
-        .act-btn { position: absolute; width: 50px; height: 50px; font-size: 24px; }
-        .act-triangle { top: 0; left: 55px; }
-        .act-cross { bottom: 0; left: 55px; }
-        .act-square { left: 0; top: 55px; }
-        .act-circle { right: 0; top: 55px; }
-
-        /* L & R Buttons */
-        .shoulder-l-container { top: 20px; left: 40px; width: 100px; height: 40px; transform-origin: top left; }
-        .shoulder-r-container { top: 20px; right: 40px; width: 100px; height: 40px; transform-origin: top right; }
-        .shoulder-btn { width: 100%; height: 100%; border-radius: 20px; font-size: 16px; position: relative; }
-
-        /* Start / Select */
-        .center-btns { bottom: 30px; left: calc(50% - 70px); width: 140px; height: 30px; display: flex; gap: 20px; transform-origin: bottom center; }
-        .small-btn { width: 60px; height: 25px; border-radius: 12px; font-size: 10px; text-transform: uppercase; }
-
-        /* Fast Forward Button */
-        .ff-btn-container { top: 20px; right: 180px; width: 50px; height: 40px; transform-origin: top right; }
-        .ff-btn { width: 100%; height: 100%; border-radius: 8px; font-size: 14px; background: rgba(0, 243, 255, 0.1); border-color: var(--neon-blue); color: var(--neon-blue); }
-        .ff-btn.active { background: var(--neon-blue); color: black; }
-
-        /* Canvas Game Area */
-        #game-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 5; }
-
         /* File Input */
         input[type="file"] { display: none; }
-        .file-upload-label { cursor: pointer; padding: 2rem; border: 2px dashed rgba(255,255,255,0.3); border-radius: 1rem; transition: all 0.3s; }
-        .file-upload-label:hover { border-color: var(--neon-purple); background: rgba(188, 19, 254, 0.1); }
-
+        
         /* Modal */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.8); z-index: 50; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
         .modal.active { display: flex; }
-        
-        /* Range Sliders & Toggles */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
-            background: var(--neon-blue); cursor: pointer; margin-top: -8px; box-shadow: 0 0 10px var(--neon-blue);
-        }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; }
-        
-        .toggle-checkbox:checked { right: 0; border-color: #68D391; }
-        .toggle-checkbox:checked + .toggle-label { background-color: var(--neon-blue); }
 
         /* Loading */
         #loading-overlay {
@@ -197,20 +79,15 @@
         .loader { width: 50px; aspect-ratio: 1; border-radius: 50%; border: 8px solid; border-color: var(--neon-blue) transparent; animation: l1 1s infinite; }
         @keyframes l1 {to{transform: rotate(.5turn)}}
 
-        /* Toast & PC Help */
+        /* Toast */
         #toast {
             position: fixed; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.8); border-left: 4px solid var(--neon-blue);
             padding: 15px 25px; border-radius: 4px; transform: translateX(150%); transition: transform 0.3s ease-out; z-index: 1000;
         }
         #toast.show { transform: translateX(0); }
-        
-        #pc-instructions {
-            display: none; position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.6);
-            padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; pointer-events: none;
-        }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Disable right click to prevent menu interrupting gameplay -->
+<body oncontextmenu="return false;">
 
     <!-- Toast Notification -->
     <div id="toast" class="brand-font text-sm">Pesan disini</div>
@@ -221,7 +98,6 @@
         <p class="text-gray-400 mb-6 text-center max-w-md px-4">Perpustakaan Game Tersimpan Anda.</p>
         
         <div id="game-list" class="flex flex-wrap justify-center gap-6 w-11/12 max-w-5xl mb-8 overflow-y-auto max-h-[55vh] p-4">
-            <!-- Game Items will be injected by JS -->
             <div class="text-gray-500 w-full text-center py-10">Memuat game...</div>
         </div>
 
@@ -240,156 +116,25 @@
         </button>
     </div>
 
-    <!-- Screen 2: Device Selection -->
-    <div id="screen-device" class="screen">
-        <button onclick="showScreen('screen-library')" class="absolute top-6 left-6 text-gray-400 hover:text-white flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Batal
-        </button>
-
-        <h2 class="text-3xl font-bold mb-6 brand-font text-white">Pilih Mode Kontrol</h2>
-        <p class="text-gray-400 mb-10 text-center max-w-md px-4">Pilih perangkat yang Anda gunakan untuk mengoptimalkan antarmuka kontrol game ini.</p>
-        
-        <div class="flex flex-col md:flex-row gap-6">
-            <button onclick="selectDevice('mobile')" class="glass-panel p-8 rounded-2xl flex flex-col items-center gap-4 hover:bg-white/5 transition border-2 border-transparent hover:border-[#00f3ff] group w-64">
-                <svg class="w-16 h-16 text-gray-300 group-hover:text-[#00f3ff] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                <h3 class="text-xl font-bold">Android / iOS</h3>
-                <p class="text-xs text-gray-400 text-center">Kontrol Sentuh & Analog Layar</p>
-            </button>
-            
-            <button onclick="selectDevice('pc')" class="glass-panel p-8 rounded-2xl flex flex-col items-center gap-4 hover:bg-white/5 transition border-2 border-transparent hover:border-[#bc13fe] group w-64">
-                <svg class="w-16 h-16 text-gray-300 group-hover:text-[#bc13fe] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <h3 class="text-xl font-bold">Komputer / PC</h3>
-                <p class="text-xs text-gray-400 text-center">Kontrol Keyboard Penuh</p>
-            </button>
-        </div>
-    </div>
-
-    <!-- Screen 3: Loading Engine -->
-
-    <!-- Screen 3: Loading -->
+    <!-- Screen 2: Loading Engine -->
     <div id="loading-overlay">
         <div class="loader mb-6"></div>
         <h3 class="brand-font text-xl text-[#00f3ff] animate-pulse">Memuat Mesin Emulator...</h3>
         <p class="text-gray-400 text-sm mt-2" id="loading-text">Menyiapkan Game</p>
     </div>
 
-    <!-- Screen 4: Game & UI -->
+    <!-- Screen 3: Game & UI -->
     <div id="screen-game" class="screen">
-        <canvas id="game-canvas"></canvas>
-
-        <div id="pc-instructions" class="brand-font text-xs text-gray-300">
-            <div class="text-[#bc13fe] mb-2 font-bold text-sm">KONTROL KEYBOARD PC</div>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-1">
-                <span>D-Pad:</span> <span>W, A, S, D</span>
-                <span>Analog:</span> <span>Arrow Keys (↑↓←→)</span>
-                <span>Aksi (△○×□):</span> <span>I, L, K, J</span>
-                <span>L / R:</span> <span>Q / E</span>
-                <span>Start/Select:</span> <span>Enter / Space</span>
-                <span>Fast Forward:</span> <span>F (Tahan)</span>
-            </div>
-            <div class="mt-3 text-[#00f3ff] cursor-pointer hover:underline" onclick="openSettings()">[ESC] Buka Menu Pengaturan</div>
+        <!-- Container untuk Mesin EmulatorJS Asli -->
+        <div id="game-container" style="width: 100vw; height: 100vh; max-width: 100%; max-height: 100%; display: flex; justify-content: center; align-items: center; background: #000;">
+            <div id="game"></div>
         </div>
 
-        <!-- Top Controls (Settings & Exit) - Dipindah ke luar game-overlay agar tetap terlihat di PC -->
-        <div class="absolute top-4 right-4 flex gap-4 pointer-events-auto z-50" id="top-bar">
-            <button onclick="openSettings()" class="bg-black/50 p-2 rounded-full border border-gray-600 text-white hover:border-[#00f3ff]" title="Pengaturan">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-            </button>
-            <button onclick="exitGame()" class="bg-red-500/50 p-2 rounded-full border border-red-400 text-white hover:bg-red-600/80" title="Keluar Game">
+        <!-- Tombol Keluar Darurat -->
+        <div class="absolute top-4 right-4 flex gap-4 pointer-events-auto z-50">
+            <button onclick="exitGame()" class="bg-red-500/80 p-2 rounded-full border border-red-400 text-white hover:bg-red-600 shadow-lg" title="Keluar Game">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             </button>
-        </div>
-
-        <div id="game-overlay">
-            
-            <!-- Edit Mode Bar -->
-            <div id="edit-bar" class="absolute top-4 left-0 w-full justify-center pointer-events-auto z-30">
-                <div class="bg-black/80 border-2 border-[#00f3ff] px-6 py-3 rounded-full flex items-center gap-4 shadow-[0_0_15px_#00f3ff]">
-                    <span class="text-[#00f3ff] font-bold text-sm">Mode Edit: Geser Kotak Putus-Putus</span>
-                    <button onclick="toggleEditMode()" class="bg-[#00f3ff] text-black px-4 py-1 rounded font-bold text-xs hover:bg-white">SIMPAN</button>
-                </div>
-            </div>
-
-            <!-- Draggable Containers -->
-            <div class="v-ctrl shoulder-l-container" id="drag-l">
-                <div class="shoulder-btn ctrl-btn" data-btn="l">L</div>
-            </div>
-            
-            <div class="v-ctrl shoulder-r-container" id="drag-r">
-                <div class="shoulder-btn ctrl-btn" data-btn="r">R</div>
-            </div>
-
-            <div class="v-ctrl ff-btn-container" id="drag-ff">
-                <div class="ff-btn ctrl-btn" data-btn="ff">►►</div>
-            </div>
-
-            <div class="v-ctrl dpad-container" id="drag-dpad">
-                <div class="dpad-center"></div>
-                <div class="dpad-btn dpad-up" data-btn="up"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg></div>
-                <div class="dpad-btn dpad-down" data-btn="down"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>
-                <div class="dpad-btn dpad-left" data-btn="left"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></div>
-                <div class="dpad-btn dpad-right" data-btn="right"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
-            </div>
-
-            <div class="v-ctrl analog-container" id="drag-analog">
-                <div id="analog-stick" class="analog-stick"></div>
-            </div>
-
-            <div class="v-ctrl action-container" id="drag-action">
-                <div class="ctrl-btn act-btn act-triangle" data-btn="triangle">△</div>
-                <div class="ctrl-btn act-btn act-square" data-btn="square">□</div>
-                <div class="ctrl-btn act-btn act-circle" data-btn="circle">○</div>
-                <div class="ctrl-btn act-btn act-cross" data-btn="cross">×</div>
-            </div>
-
-            <div class="v-ctrl center-btns" id="drag-center">
-                <div class="ctrl-btn small-btn" data-btn="select">Sel</div>
-                <div class="ctrl-btn small-btn" data-btn="start">Strt</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="modal-settings" class="modal">
-        <div class="glass-panel p-6 rounded-xl w-11/12 max-w-md relative">
-            <button onclick="closeSettings()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 class="text-2xl font-bold mb-6 brand-font text-[#00f3ff]">Pengaturan Emulator</h2>
-            
-            <div id="mobile-settings">
-                <div class="mb-4">
-                    <label class="block text-sm text-gray-300 mb-1 flex justify-between"><span>Transparansi Kontrol</span> <span id="val-opacity">60%</span></label>
-                    <input type="range" id="setting-opacity" min="10" max="100" value="60" oninput="updateSettings()">
-                </div>
-                
-                <div class="mb-6">
-                    <label class="block text-sm text-gray-300 mb-1 flex justify-between"><span>Ukuran Kontrol</span> <span id="val-scale">100%</span></label>
-                    <input type="range" id="setting-scale" min="50" max="150" value="100" oninput="updateSettings()">
-                </div>
-
-                <div class="flex items-center justify-between mb-3 border-b border-gray-700 pb-3">
-                    <span class="text-sm">Tampilkan D-Pad</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggle-dpad" class="sr-only peer" checked onchange="toggleControlVis('drag-dpad', this.checked)">
-                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00f3ff]"></div>
-                    </label>
-                </div>
-
-                <div class="flex items-center justify-between mb-4 border-b border-gray-700 pb-3">
-                    <span class="text-sm">Tampilkan Analog Joystick</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggle-analog" class="sr-only peer" checked onchange="toggleControlVis('drag-analog', this.checked)">
-                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00f3ff]"></div>
-                    </label>
-                </div>
-
-                <button onclick="toggleEditMode()" class="w-full bg-black/40 border border-[#00f3ff] text-[#00f3ff] py-2 rounded-lg mb-4 hover:bg-[#00f3ff] hover:text-black font-bold flex justify-center items-center gap-2 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg> Edit Letak Kontrol (Drag)
-                </button>
-            </div>
-
-            <button onclick="closeSettings()" class="w-full neon-btn py-2 rounded-lg">Tutup</button>
         </div>
     </div>
 
@@ -435,11 +180,7 @@
     </div>
 
     <script>
-        // --- State Management & Database ---
-        let selectedDevice = 'mobile';
-        let isGameRunning = false;
         let currentGameFile = null;
-        
         let db;
         const DB_NAME = 'WebEmuDB';
         const STORE_NAME = 'games';
@@ -468,31 +209,9 @@
             });
         }
 
-        // Controller State
-        const inputState = {
-            up: false, down: false, left: false, right: false,
-            triangle: false, square: false, circle: false, cross: false,
-            l: false, r: false, start: false, select: false, ff: false,
-            analogX: 0, analogY: 0
-        };
-
-        const keyMap = {
-            'w': 'up', 's': 'down', 'a': 'left', 'd': 'right', // D-Pad
-            'arrowup': 'upA', 'arrowdown': 'downA', 'arrowleft': 'leftA', 'arrowright': 'rightA', // Analog (simulated on PC)
-            'i': 'triangle', 'j': 'square', 'l': 'circle', 'k': 'cross',
-            'q': 'l', 'e': 'r', 'enter': 'start', ' ': 'select', 'f': 'ff'
-        };
-
-        // --- Navigation & UI ---
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-        }
-
-        function selectDevice(device) {
-            selectedDevice = device;
-            showScreen('screen-upload');
-            showToast(`Mode ${device === 'pc' ? 'PC/Keyboard' : 'Mobile/Sentuh'} dipilih.`);
         }
 
         function showToast(msg) {
@@ -502,7 +221,6 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // --- Database & File Handling ---
         async function handleFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -523,7 +241,7 @@
             } else {
                 showToast('Harap unggah file berformat .ISO atau .CSO');
             }
-            event.target.value = ''; // Reset input
+            event.target.value = '';
         }
 
         function saveGameToDB(file) {
@@ -585,7 +303,7 @@
 
                 div.onclick = () => {
                     currentGameFile = game.file;
-                    showScreen('screen-device'); // Go to device selection
+                    startGame();
                 };
 
                 list.appendChild(div);
@@ -602,440 +320,88 @@
             };
         }
 
-        // --- Game Initialization ---
-        function selectDevice(device) {
-            selectedDevice = device;
-            startGame();
-        }
-
         function startGame() {
-            if(!currentGameFile) {
-                showScreen('screen-library');
-                return;
-            }
+            if(!currentGameFile) return;
 
-            // Trigger Fullscreen
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen().catch(err => console.log("Fullscreen refused:", err));
             }
 
-            // Show Loading
-            document.getElementById('loading-overlay').style.display = 'flex';
-            
-            // Layout Adjustments based on Device
-            if (selectedDevice === 'pc') {
-                document.getElementById('game-overlay').style.display = 'none';
-                document.getElementById('pc-instructions').style.display = 'block';
-            } else {
-                document.getElementById('game-overlay').style.display = 'block';
-                document.getElementById('pc-instructions').style.display = 'none';
+            // --- CEK KEAMANAN BROWSER (Penting Untuk PSP/SharedArrayBuffer) ---
+            // Mencegah munculnya "Error for site owner" kosongan
+            if (typeof SharedArrayBuffer === 'undefined') {
+                document.getElementById('game-container').innerHTML = `
+                    <div class="bg-red-900/20 border-2 border-red-500/50 p-8 rounded-2xl flex flex-col items-center text-center max-w-2xl mx-4 glass-panel">
+                        <svg class="w-16 h-16 text-red-500 mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-2 brand-font">Keamanan Browser Memblokir Game</h2>
+                        <p class="text-gray-300 mb-6 text-sm md:text-base leading-relaxed">
+                            Game PSP membutuhkan sistem pengelola memori <b>SharedArrayBuffer</b> agar tidak lag. 
+                            Namun, browser modern memblokir fitur ini secara bawaan demi keamanan.
+                        </p>
+                        <div class="text-xs text-gray-400 bg-black/40 p-4 rounded-lg w-full text-left font-mono mb-4 border border-gray-700">
+                            <b>SOLUSI:</b><br>
+                            Untuk menjalankan WebEmu ini tanpa mendapatkan pesan <i>"Error for site owner"</i>, Anda harus menghosting file ini di Web Server (seperti VPS atau Nginx) dan menambahkan header keamanan ini:<br><br>
+                            <span class="text-[#00f3ff]">Cross-Origin-Embedder-Policy: require-corp</span><br>
+                            <span class="text-[#00f3ff]">Cross-Origin-Opener-Policy: same-origin</span>
+                        </div>
+                    </div>
+                `;
+                showScreen('screen-game');
+                return;
             }
 
-            // Fake Loading Sequence
-            const loadingTexts = ["Memuat dari Memori Browser...", "Mengekstrak Header ISO...", "Kompilasi JIT WebAssembly...", "Memulai Mesin Grafis..."];
-            let step = 0;
-            const interval = setInterval(() => {
-                if(step < loadingTexts.length) {
-                    document.getElementById('loading-text').innerText = loadingTexts[step];
-                    step++;
-                } else {
-                    clearInterval(interval);
-                    document.getElementById('loading-overlay').style.display = 'none';
-                    showScreen('screen-game');
-                    initGameEngine();
-                }
-            }, 800);
+            document.getElementById('loading-overlay').style.display = 'flex';
+            document.getElementById('loading-text').innerText = "Mengunduh Core PPSSPP dari CDN Resmi (Butuh koneksi internet)...";
+            
+            const gameFileUrl = URL.createObjectURL(currentGameFile);
+            document.getElementById('game-container').innerHTML = '<div id="game"></div>';
+
+            window.EJS_player = '#game';
+            window.EJS_core = 'psp';
+            window.EJS_gameName = currentGameFile.name.replace(/\.(iso|cso)$/i, '');
+            window.EJS_color = '#00f3ff';
+            window.EJS_startOnLoaded = true;
+            
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+            window.EJS_gameUrl = gameFileUrl;
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+            document.body.appendChild(script);
+
+            setTimeout(() => {
+                document.getElementById('loading-overlay').style.display = 'none';
+                showScreen('screen-game');
+            }, 2000);
         }
 
         function exitGame() {
             if (document.exitFullscreen) {
                 document.exitFullscreen().catch(err => console.log(err));
             }
-            isGameRunning = false;
-            showScreen('screen-library');
-            currentGameFile = null;
+            window.location.reload(); 
         }
 
-        // --- Settings Modal ---
-        function openSettings() {
-            document.getElementById('modal-settings').classList.add('active');
-        }
-        
-        function closeSettings() {
-            document.getElementById('modal-settings').classList.remove('active');
-        }
-
-        function openRomsModal() {
-            document.getElementById('modal-roms').classList.add('active');
-        }
-
-        function closeRomsModal() {
-            document.getElementById('modal-roms').classList.remove('active');
-        }
-
-        // Feedback Modal Logic
-        function openFeedbackModal() {
-            document.getElementById('modal-feedback').classList.add('active');
-        }
-
-        function closeFeedbackModal() {
-            document.getElementById('modal-feedback').classList.remove('active');
-        }
+        function openRomsModal() { document.getElementById('modal-roms').classList.add('active'); }
+        function closeRomsModal() { document.getElementById('modal-roms').classList.remove('active'); }
+        function openFeedbackModal() { document.getElementById('modal-feedback').classList.add('active'); }
+        function closeFeedbackModal() { document.getElementById('modal-feedback').classList.remove('active'); }
 
         function sendFeedback() {
             const email = document.getElementById('fb-email').value;
             const message = document.getElementById('fb-message').value;
+            if(!email || !message) { showToast("Harap isi email dan pesan Anda."); return; }
             
-            if(!email || !message) {
-                showToast("Harap isi email dan pesan Anda.");
-                return;
-            }
-            
-            // Format pengiriman menggunakan Mailto (membuka aplikasi email pengguna)
             const targetEmail = "natanael87500@gmail.com";
             const subject = encodeURIComponent("Saran & Ulasan WebEmu Pro");
             const body = encodeURIComponent("Dari: " + email + "\n\nIsi Pesan:\n" + message);
             
             window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-            
             showToast("Membuka aplikasi email...");
             closeFeedbackModal();
-            
-            // Reset form
             document.getElementById('fb-email').value = '';
             document.getElementById('fb-message').value = '';
-        }
-
-        function updateSettings() {
-            const opacity = document.getElementById('setting-opacity').value;
-            const scale = document.getElementById('setting-scale').value;
-            
-            document.getElementById('val-opacity').innerText = opacity + '%';
-            document.getElementById('val-scale').innerText = scale + '%';
-
-            document.documentElement.style.setProperty('--ctrl-opacity', opacity / 100);
-            document.documentElement.style.setProperty('--ctrl-scale', scale / 100);
-        }
-
-        function toggleControlVis(id, isVisible) {
-            const el = document.getElementById(id);
-            if (el) {
-                if (isVisible) el.classList.remove('hidden-ctrl');
-                else el.classList.add('hidden-ctrl');
-            }
-        }
-
-        // --- Fitur Edit Letak Kontrol (Drag & Drop) ---
-        let isEditMode = false;
-        
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            if (isEditMode) {
-                document.body.classList.add('editing-mode');
-                closeSettings(); // Tutup pengaturan saat mulai mengedit
-                showToast("Mode Edit Aktif: Geser kontrol dengan jari/mouse");
-            } else {
-                document.body.classList.remove('editing-mode');
-                showToast("Posisi kontrol HUD berhasil disimpan.");
-            }
-        }
-
-        let dragTarget = null;
-        let startX = 0, startY = 0;
-
-        document.querySelectorAll('.v-ctrl').forEach(ctrl => {
-            ctrl.addEventListener('touchstart', dragStart, {passive: false});
-            ctrl.addEventListener('mousedown', dragStart);
-        });
-
-        function dragStart(e) {
-            if (!isEditMode) return;
-            e.preventDefault();
-            dragTarget = e.currentTarget;
-            
-            const touch = e.type.includes('mouse') ? e : e.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-
-            // Mengubah posisi dari bottom/right ke absolut (top/left) agar tidak lompat saat digeser
-            const rect = dragTarget.getBoundingClientRect();
-            dragTarget.style.bottom = 'auto';
-            dragTarget.style.right = 'auto';
-            dragTarget.style.left = rect.left + 'px';
-            dragTarget.style.top = rect.top + 'px';
-
-            document.addEventListener('touchmove', dragMove, {passive: false});
-            document.addEventListener('mousemove', dragMove);
-            document.addEventListener('touchend', dragEnd);
-            document.addEventListener('mouseup', dragEnd);
-        }
-
-        function dragMove(e) {
-            if (!dragTarget || !isEditMode) return;
-            e.preventDefault();
-            
-            const touch = e.type.includes('mouse') ? e : e.touches[0];
-            const dx = touch.clientX - startX;
-            const dy = touch.clientY - startY;
-            startX = touch.clientX;
-            startY = touch.clientY;
-
-            const currentLeft = parseFloat(dragTarget.style.left) || 0;
-            const currentTop = parseFloat(dragTarget.style.top) || 0;
-
-            dragTarget.style.left = (currentLeft + dx) + 'px';
-            dragTarget.style.top = (currentTop + dy) + 'px';
-        }
-
-        function dragEnd() {
-            dragTarget = null;
-            document.removeEventListener('touchmove', dragMove);
-            document.removeEventListener('mousemove', dragMove);
-            document.removeEventListener('touchend', dragEnd);
-            document.removeEventListener('mouseup', dragEnd);
-        }
-
-        // --- Button & Analog Inputs ---
-        const vBtns = document.querySelectorAll('.v-ctrl [data-btn]');
-        
-        vBtns.forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                if(isEditMode) return;
-                e.preventDefault();
-                const key = btn.getAttribute('data-btn');
-                inputState[key] = true;
-                btn.classList.add('active');
-            }, {passive: false});
-            
-            btn.addEventListener('touchend', (e) => {
-                if(isEditMode) return;
-                e.preventDefault();
-                const key = btn.getAttribute('data-btn');
-                inputState[key] = false;
-                btn.classList.remove('active');
-            });
-            btn.addEventListener('touchcancel', (e) => {
-                const key = btn.getAttribute('data-btn');
-                inputState[key] = false;
-                btn.classList.remove('active');
-            });
-        });
-
-        // Analog Stick Logic
-        const analogBase = document.getElementById('drag-analog');
-        const analogStick = document.getElementById('analog-stick');
-        let isAnalogDragging = false;
-        let analogRect = null;
-        const maxRadius = 35;
-
-        function startAnalog(x, y) {
-            if(isEditMode) return;
-            isAnalogDragging = true;
-            analogRect = analogBase.getBoundingClientRect();
-            analogStick.style.transition = 'none';
-            moveAnalog(x, y);
-        }
-
-        function moveAnalog(x, y) {
-            if (!isAnalogDragging || !analogRect || isEditMode) return;
-            const cx = analogRect.left + analogRect.width / 2;
-            const cy = analogRect.top + analogRect.height / 2;
-            let dx = x - cx;
-            let dy = y - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            
-            if (dist > maxRadius) {
-                dx = (dx / dist) * maxRadius;
-                dy = (dy / dist) * maxRadius;
-            }
-            
-            analogStick.style.transform = `translate(${dx}px, ${dy}px)`;
-            
-            // Map to -1.0 to 1.0 for game engine
-            inputState.analogX = dx / maxRadius;
-            inputState.analogY = dy / maxRadius;
-        }
-
-        function endAnalog() {
-            if(isEditMode) return;
-            isAnalogDragging = false;
-            analogStick.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            analogStick.style.transform = 'translate(0px, 0px)';
-            inputState.analogX = 0;
-            inputState.analogY = 0;
-        }
-
-        // Touch Analog
-        analogBase.addEventListener('touchstart', (e) => { 
-            if(isEditMode) return; e.preventDefault(); 
-            startAnalog(e.touches[0].clientX, e.touches[0].clientY); 
-        }, {passive: false});
-        analogBase.addEventListener('touchmove', (e) => { 
-            if(isEditMode) return; e.preventDefault(); 
-            moveAnalog(e.touches[0].clientX, e.touches[0].clientY); 
-        }, {passive: false});
-        analogBase.addEventListener('touchend', endAnalog);
-        analogBase.addEventListener('touchcancel', endAnalog);
-        
-        // Mouse Analog (For PC Testing)
-        analogBase.addEventListener('mousedown', (e) => { if(isEditMode) return; startAnalog(e.clientX, e.clientY); });
-        window.addEventListener('mousemove', (e) => { if(isAnalogDragging && !isEditMode) moveAnalog(e.clientX, e.clientY); });
-        window.addEventListener('mouseup', endAnalog);
-
-        // PC Keyboard Logic
-        window.addEventListener('keydown', (e) => {
-            if(!isGameRunning) return;
-            if(e.key === 'Escape') { openSettings(); return; }
-            const key = e.key.toLowerCase();
-            if(keyMap[key]) {
-                const action = keyMap[key];
-                if(action.endsWith('A')) { // PC Arrow to Analog Sim
-                    if(action === 'upA') inputState.analogY = -1;
-                    if(action === 'downA') inputState.analogY = 1;
-                    if(action === 'leftA') inputState.analogX = -1;
-                    if(action === 'rightA') inputState.analogX = 1;
-                } else {
-                    inputState[action] = true;
-                    const vBtn = document.querySelector(`[data-btn="${action}"]`);
-                    if(vBtn) vBtn.classList.add('active');
-                }
-            }
-        });
-
-        window.addEventListener('keyup', (e) => {
-            if(!isGameRunning) return;
-            const key = e.key.toLowerCase();
-            if(keyMap[key]) {
-                const action = keyMap[key];
-                if(action.endsWith('A')) {
-                    if(action === 'upA' || action === 'downA') inputState.analogY = 0;
-                    if(action === 'leftA' || action === 'rightA') inputState.analogX = 0;
-                } else {
-                    inputState[action] = false;
-                    const vBtn = document.querySelector(`[data-btn="${action}"]`);
-                    if(vBtn) vBtn.classList.remove('active');
-                }
-            }
-        });
-
-        // --- Demo Game Engine (Renderer) ---
-        let canvas, ctx, shipX, shipY, gridOffset = 0;
-        
-        function initGameEngine() {
-            canvas = document.getElementById('game-canvas');
-            ctx = canvas.getContext('2d');
-            isGameRunning = true;
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            requestAnimationFrame(gameLoop);
-            showToast("Sukses. Coba Analog, D-Pad, dan Fast Forward!");
-        }
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            if(isGameRunning) { shipX = canvas.width / 2; shipY = canvas.height * 0.7; }
-        }
-
-        function gameLoop() {
-            if(!isGameRunning) return;
-            updateGameLogic();
-            drawGameScene();
-            requestAnimationFrame(gameLoop);
-        }
-
-        function updateGameLogic() {
-            // Speed multiplier for Fast Forward
-            const speedMult = inputState.ff || inputState.r ? 3 : 1; 
-            const speed = 5 * speedMult;
-
-            // D-Pad
-            if(inputState.left) shipX -= speed;
-            if(inputState.right) shipX += speed;
-            if(inputState.up) shipY -= speed;
-            if(inputState.down) shipY += speed;
-
-            // Analog
-            if(Math.abs(inputState.analogX) > 0.1 || Math.abs(inputState.analogY) > 0.1) {
-                shipX += inputState.analogX * speed;
-                shipY += inputState.analogY * speed;
-            }
-
-            // Boundaries
-            if(shipX < 50) shipX = 50;
-            if(shipX > canvas.width - 50) shipX = canvas.width - 50;
-            if(shipY < 50) shipY = 50;
-            if(shipY > canvas.height - 50) shipY = canvas.height - 50;
-
-            gridOffset += (2 * speedMult);
-            if(gridOffset > 40) gridOffset = 0;
-        }
-
-        function drawGameScene() {
-            ctx.fillStyle = '#050510';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 3D Grid
-            ctx.strokeStyle = 'rgba(188, 19, 254, 0.4)';
-            ctx.lineWidth = 2;
-            const horizon = canvas.height * 0.4;
-            
-            ctx.beginPath();
-            for(let i = 0; i < 20; i++) {
-                let y = horizon + Math.pow(i, 1.5) * 5 + (gridOffset * (i/10));
-                if(y < canvas.height) { ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); }
-            }
-            const centerX = canvas.width / 2;
-            for(let i = -15; i <= 15; i++) {
-                ctx.moveTo(centerX, horizon); ctx.lineTo(centerX + (i * 150), canvas.height);
-            }
-            ctx.stroke();
-
-            // Sun
-            let grd = ctx.createLinearGradient(0, horizon - 100, 0, horizon);
-            grd.addColorStop(0, "rgba(255, 0, 128, 0)");
-            grd.addColorStop(1, "rgba(255, 0, 128, 1)");
-            ctx.fillStyle = grd;
-            ctx.beginPath(); ctx.arc(centerX, horizon, 100, Math.PI, 0); ctx.fill();
-
-            // Draw Ship
-            ctx.save();
-            ctx.translate(shipX, shipY);
-            
-            if(inputState.left || inputState.analogX < -0.2) ctx.rotate(-0.2);
-            if(inputState.right || inputState.analogX > 0.2) ctx.rotate(0.2);
-            
-            if(inputState.cross || inputState.square || inputState.circle || inputState.triangle) {
-                ctx.shadowBlur = 20; ctx.shadowColor = '#00f3ff';
-            }
-
-            ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(20, 20); ctx.lineTo(-20, 20); ctx.closePath();
-            ctx.fillStyle = '#fff'; ctx.fill();
-            ctx.strokeStyle = '#00f3ff'; ctx.lineWidth = 3; ctx.stroke();
-
-            // Engine Fire
-            if(inputState.up || inputState.cross || inputState.analogY < -0.2) {
-                ctx.beginPath(); ctx.moveTo(-10, 22); ctx.lineTo(0, 40 + Math.random()*20); ctx.lineTo(10, 22);
-                ctx.fillStyle = inputState.ff ? '#00f3ff' : '#ff00ff';
-                ctx.fill();
-            }
-            ctx.restore();
-            
-            // Top HUD Texts
-            ctx.fillStyle = 'rgba(255,255,255,0.7)';
-            ctx.font = '16px Orbitron';
-            ctx.textAlign = 'center';
-            ctx.fillText("SIMULASI MESIN ISO AKTIF", canvas.width/2, 40);
-            
-            if(inputState.ff) {
-                ctx.fillStyle = '#00f3ff'; ctx.font = 'bold 20px Orbitron';
-                ctx.fillText("FAST FORWARD ►►", canvas.width/2, 70);
-            }
-            if (inputState.start) {
-                ctx.fillStyle = '#bc13fe'; ctx.font = '30px Orbitron';
-                ctx.fillText("PAUSED", canvas.width/2, canvas.height/2);
-            }
         }
     </script>
 </body>
